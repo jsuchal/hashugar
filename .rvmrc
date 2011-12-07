@@ -1,1 +1,1 @@
-1.9.3@hashugar --create
+rvm use 1.9.3@hashugar --create
