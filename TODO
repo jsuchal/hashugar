@@ -1,0 +1,6 @@
+TODO
+- Basic hash methods each_pair...
+
+Ideas
+- HotSpot-like define method - after many calls of method_missing define getter/setter
+- Lazy convert hash
