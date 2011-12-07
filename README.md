@@ -5,6 +5,7 @@ Nested OpenStruct alternative optimized for speed especially for many short-live
 
 
 Usage
+-----
 
 `$ gem install hashugar`
 
