@@ -1,5 +1,5 @@
-Hashugar
-========
+Hashugar (Hash Sugar)
+=====================
 
 Nested OpenStruct alternative optimized for speed especially for many short-lived objects (e.g. results from db).
 
