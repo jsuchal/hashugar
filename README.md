@@ -1,6 +1,8 @@
 Hashugar (Hash Sugar)
 =====================
 
+[![Build Status](https://secure.travis-ci.org/jsuchal/hashugar.png)](http://travis-ci.org/jsuchal/hashugar)
+
 Nested OpenStruct alternative optimized for speed especially for many short-lived objects (e.g. results from db).
 
 
