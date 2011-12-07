@@ -57,4 +57,13 @@ describe Hashugar do
       hashugar.last.b.should == 2
     end
   end
+
+  context 'when using respond_to?' do
+    it 'should return true on valid key' do
+      hashugar = {:a => 1}.to_hashugar
+      hashugar.respond_to?('a').should be_true
+      hashugar.respond_to?(:a).should be_true
+      hashugar.respond_to?(:b).should be_false
+    end
+  end
 end

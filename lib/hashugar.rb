@@ -26,6 +26,10 @@ class Hashugar
     self
   end
 
+  def respond_to?(key)
+    @table.has_key?(convert_key(key))
+  end
+
   private
   def convert_key(key)
     key.is_a?(Symbol) ? key.to_s : key
