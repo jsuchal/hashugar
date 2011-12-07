@@ -49,4 +49,12 @@ describe Hashugar do
       hashugar.a.b.should == 1
     end
   end
+
+  context 'when accessing hashes in array' do
+    it 'should return hashugars' do
+      hashugar = [{:a => 1}, {:b => 2}].to_hashugar
+      hashugar[0].a.should == 1
+      hashugar.last.b.should == 2
+    end
+  end
 end

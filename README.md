@@ -11,10 +11,10 @@ Usage
 
 -----
 ```ruby
-hashugar = {:a => 1, 'b' => {:c => 3}}.to_hashugar
+hashugar = {:a => 1, 'b' => {:c => 2, :d => [3, 4, {:e => 5}]}}.to_hashugar
 hashugar.a # => 1
-hashugar.b # => 2
-hashugar.b.c # => 3
+hashugar.b.c # => 2
+hashugar.b.d.last.e # => 5
 ```
 
 How fast is it?

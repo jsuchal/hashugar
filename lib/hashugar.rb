@@ -48,6 +48,13 @@ class Hash
   end
 end
 
+class Array
+  def to_hashugar
+    # TODO lazy?
+    Array.new(collect(&:to_hashugar))
+  end
+end
+
 class Object
   def to_hashugar
     self
