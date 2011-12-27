@@ -66,4 +66,12 @@ describe Hashugar do
       hashugar.respond_to?(:b).should be_false
     end
   end
+
+  context 'when creating using Hashugar#new' do
+    it 'should accept hash in contructor' do
+      hashugar = Hashugar.new({:a => {:b => 1}})
+      hashugar.a.b.should == 1
+    end
+  end
+
 end

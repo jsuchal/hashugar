@@ -2,7 +2,10 @@ require "hashugar/version"
 
 class Hashugar
   def initialize(hash)
-    @table = hash
+    @table = {}
+    hash.each_pair do |key, value|
+      @table[convert_key(key)] = value.to_hashugar
+    end
   end
 
   def method_missing(method, *args, &block)
@@ -38,12 +41,7 @@ end
 
 class Hash
   def to_hashugar
-    # TODO lazy?
-    table = {}
-    each_pair do |key, value|
-      table[convert_key(key)] = value.to_hashugar
-    end
-    Hashugar.new(table)
+    Hashugar.new(self)
   end
 
   private

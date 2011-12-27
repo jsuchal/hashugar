@@ -29,36 +29,36 @@ Let's compare to the competitors - [OpenStruct](http://www.ruby-doc.org/stdlib-1
 Ruby 1.9.3 benchmark
 
     OpenStruct create small hash and access once
-     47458.0 (±3.4%) i/s -     238380 in   5.029038s (cycle=4110)
+     43858.0 (±5.5%) i/s -     221820 in   5.074250s (cycle=3697)
     Hashr      create small hash and access once
-     70290.2 (±3.1%) i/s -     356240 in   5.072827s (cycle=5840)
+     67408.9 (±5.0%) i/s -     339780 in   5.053728s (cycle=5663)
     Hashugar   create small hash and access once
-    873106.5 (±4.8%) i/s -    4381784 in   5.030829s (cycle=37774)
+    230217.9 (±4.2%) i/s -    1152670 in   5.015705s (cycle=15790)
 
     OpenStruct create big hash and access once
-      1028.3 (±3.0%) i/s -       5202 in   5.063657s (cycle=102)
+       974.8 (±4.9%) i/s -       4949 in   5.090937s (cycle=101)
     Hashr     create big hash and access once
-      3686.6 (±2.7%) i/s -      18615 in   5.053303s (cycle=365)
+      3468.1 (±5.9%) i/s -      17450 in   5.051485s (cycle=349)
     Hashugar   create big hash and access once
-    839766.3 (±4.9%) i/s -    4199760 in   5.013690s (cycle=36840)
+     12738.3 (±2.6%) i/s -      64220 in   5.045018s (cycle=1235)
 
     OpenStruct create small hash and access ten times
-     46554.1 (±2.8%) i/s -     234958 in   5.050963s (cycle=4051)
+     46170.2 (±2.7%) i/s -     231362 in   5.014712s (cycle=3989)
     Hashr      create small hash and access ten times
-     42768.0 (±2.4%) i/s -     216543 in   5.066085s (cycle=3799)
+     41818.8 (±2.5%) i/s -     210320 in   5.032433s (cycle=3824)
     Hashugar   create small hash and access ten times
-    121441.3 (±4.1%) i/s -     608597 in   5.021793s (cycle=9977)
+     82216.8 (±2.3%) i/s -     411742 in   5.010785s (cycle=7099)
 
     OpenStruct create small hash and access fifty times
-     36047.5 (±2.8%) i/s -     181390 in   5.035970s (cycle=3298)
+     36126.0 (±2.8%) i/s -     182112 in   5.044983s (cycle=3252)
     Hashr      create small hash and access fifty times
-     15349.6 (±4.1%) i/s -      76752 in   5.008858s (cycle=1476)
+     15584.9 (±2.5%) i/s -      78312 in   5.028076s (cycle=1506)
     Hashugar   create small hash and access fifty times
-     23561.9 (±7.4%) i/s -     117250 in   5.005844s (cycle=2345)
+     21513.9 (±6.0%) i/s -     107952 in   5.039238s (cycle=2076)
 
     OpenStruct create small hash and access hundred times
-     27801.2 (±5.8%) i/s -     139194 in   5.027806s (cycle=2442)
+     28617.9 (±2.7%) i/s -     144928 in   5.068069s (cycle=2588)
     Hashr      create small hash and access hundred times
-      8223.7 (±6.0%) i/s -      41463 in   5.061138s (cycle=813)
+      8860.7 (±1.7%) i/s -      45103 in   5.091664s (cycle=851)
     Hashugar   create small hash and access hundred times
-     12406.0 (±3.8%) i/s -      61984 in   5.004111s (cycle=1192)
+     11491.3 (±2.4%) i/s -      57512 in   5.007677s (cycle=1106)
