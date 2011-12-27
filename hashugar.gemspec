@@ -18,4 +18,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'benchmark_suite'
   gem.add_development_dependency 'ffi'
+  gem.add_development_dependency 'hashr'
 end
