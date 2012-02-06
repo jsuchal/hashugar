@@ -3,8 +3,11 @@ require "hashugar/version"
 class Hashugar
   def initialize(hash)
     @table = {}
+    @table_with_original_keys = {}
     hash.each_pair do |key, value|
-      @table[convert_key(key)] = value.to_hashugar
+      hashugar = value.to_hashugar
+      @table_with_original_keys[key] = hashugar
+      @table[convert_key(key)] = hashugar
     end
   end
 
@@ -33,6 +36,10 @@ class Hashugar
     @table.has_key?(convert_key(key))
   end
 
+  def each(&block)
+    @table_with_original_keys.each(&block)
+  end
+
   private
   def convert_key(key)
     key.is_a?(Symbol) ? key.to_s : key
@@ -42,11 +49,6 @@ end
 class Hash
   def to_hashugar
     Hashugar.new(self)
-  end
-
-  private
-  def convert_key(key)
-    key.is_a?(Symbol) ? key.to_s : key
   end
 end
 

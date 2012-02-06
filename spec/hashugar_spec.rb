@@ -74,4 +74,19 @@ describe Hashugar do
     end
   end
 
+  context 'when enumerating' do
+    it 'should act like normal hash' do
+      hashugar = Hashugar.new({:a => 4, :c => 2})
+
+      keys = []
+      values = []
+      hashugar.each do |k, v|
+        keys << k
+        values << v
+      end
+
+      keys.should == [:a, :c]
+      values.should == [4, 2]
+    end
+  end
 end
