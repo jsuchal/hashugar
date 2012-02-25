@@ -39,6 +39,11 @@ class Hashugar
   def each(&block)
     @table_with_original_keys.each(&block)
   end
+  
+  def keys
+    @table_with_original_keys.keys
+  end
+
 
   private
   def convert_key(key)
