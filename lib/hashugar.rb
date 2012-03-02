@@ -52,6 +52,10 @@ class Hashugar
     @table_with_original_keys.reject(&block)
   end
   
+  def any?(&block)
+    @table_with_original_keys.any?(&block)
+  end
+  
   def keys
     @table_with_original_keys.keys
   end
