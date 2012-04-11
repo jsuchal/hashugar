@@ -67,6 +67,10 @@ class Hashugar
   def length
     @table_with_original_keys.length
   end
+  
+  def invert
+    @table_with_original_keys.invert
+  end
 
   private
   def convert_key(key)
