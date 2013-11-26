@@ -19,6 +19,11 @@ hashugar.b.c # => 2
 hashugar.b.d.last.e # => 5
 ```
 
+### New in 0.0.7
+Convert a `Hashugar` object back to a regular Ruby `Hash` recursively - tested with a `Hashugar` converted from a `Hash` containing `Hash`, `Array`, `Int`, `Fixnum` and `String` objects.
+
+`hashugar.to_new_hash # => {:a => 1, 'b' => {:c => 2, :d => [3, 4, {:e => 5}]}}`
+
 How fast is it?
 ---------------
 
