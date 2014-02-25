@@ -1,4 +1,4 @@
-require "hashugar/version"
+require 'hashugar/version.rb'
 
 class Hashugar
 	def initialize(hash)
@@ -7,7 +7,7 @@ class Hashugar
 		hash.each_pair do |key, value|
 			hashugar = value.to_hashugar
 			@table_with_original_keys[key] = hashugar
-			@table[convert_key(key)] = hashugar
+			@table[stringify_key(key)] = hashugar
 		end
 	end
 
@@ -21,36 +21,43 @@ class Hashugar
 	end
 
 	def [](key)
-		@table[convert_key(key)]
+		@table[stringify_key(key)]
 	end
 
 	def []=(key, value)
-		@table[convert_key(key)] = value
+		@table[stringify_key(key)] = value
 	end
 
 	def to_hashugar
 		self
 	end
 
-	# This method obviously converts a Hashugar struct back to a Hash.
+	# This method (obviously) converts a Hashugar struct back to a Hash.
+	# NOTE: ENV already implements 'to_hash', necessitating an alternate method name.
 	# @return [Hash] Standard Ruby Hash from deep conversion of Hashugar struct.
-	def to_new_hash
-		@table_with_original_keys.reduce({}) do |hash, (key, value)|
-			hash[key] = value.to_new_hash
+	def to_h
+		@table.reduce({}) do |hash, (key, value)|
+			hash[key] = value.to_h
 			hash
 		end
 	end
 
 	def respond_to?(key)
-		@table.has_key?(convert_key(key))
+		@table.has_key?(stringify_key(key))
 	end
+
+	# Enumerable methods
 
 	def each(&block)
 		@table_with_original_keys.each(&block)
 	end
 
+	def collect(&block)
+		@table_with_original_keys.collect(&block)
+	end
+
 	private
-	def convert_key(key)
+	def stringify_key(key)
 		key.is_a?(Symbol) ? key.to_s : key
 	end
 end
@@ -60,7 +67,7 @@ class Hash
 		Hashugar.new(self)
 	end
 
-	def to_new_hash
+	def to_h
 		self.to_hash
 	end
 end
@@ -71,8 +78,14 @@ class Array
 		Array.new(collect(&:to_hashugar))
 	end
 
-	def to_new_hash
-		Array.new(collect(&:to_new_hash))
+	def to_h
+		Array.new(collect(&:to_h))
+	end
+end
+
+class String
+	def to_h
+		self
 	end
 end
 
@@ -81,7 +94,7 @@ class Object
 		self
 	end
 
-	def to_new_hash
+	def to_h
 		self
 	end
 end
