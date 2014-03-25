@@ -1,4 +1,4 @@
-require 'hashugar/version.rb'
+require 'hashugar/version'
 
 class Hashugar
 	def initialize(hash)
@@ -11,6 +11,10 @@ class Hashugar
 		end
 	end
 
+	def to_hashugar
+		self
+	end
+
 	def method_missing(method, *args, &block)
 		method = method.to_s
 		if method.chomp!('=')
@@ -20,6 +24,14 @@ class Hashugar
 		end
 	end
 
+	def respond_to?(key)
+		@table.has_key?(stringify_key(key))
+	end
+
+	################################################################################
+	#  Hash-like methods
+	################################################################################
+
 	def [](key)
 		@table[stringify_key(key)]
 	end
@@ -28,13 +40,11 @@ class Hashugar
 		@table[stringify_key(key)] = value
 	end
 
-	def to_hashugar
-		self
-	end
-
 	# This method (obviously) converts a Hashugar struct back to a Hash.
 	# NOTE: ENV already implements 'to_hash', necessitating an alternate method name.
+	#
 	# @return [Hash] Standard Ruby Hash from deep conversion of Hashugar struct.
+	#
 	def to_h
 		@table.reduce({}) do |hash, (key, value)|
 			hash[key] = value.to_h
@@ -42,11 +52,9 @@ class Hashugar
 		end
 	end
 
-	def respond_to?(key)
-		@table.has_key?(stringify_key(key))
-	end
-
-	# Enumerable methods
+	################################################################################
+	#  Enumerable methods
+	################################################################################
 
 	def each(&block)
 		@table_with_original_keys.each(&block)
@@ -56,7 +64,16 @@ class Hashugar
 		@table_with_original_keys.collect(&block)
 	end
 
+	################################################################################
+	#  Formatting
+	################################################################################
+
+	def to_s
+		self.to_h.to_s
+	end
+
 	private
+
 	def stringify_key(key)
 		key.is_a?(Symbol) ? key.to_s : key
 	end
