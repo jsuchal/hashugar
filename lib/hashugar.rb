@@ -1,4 +1,4 @@
-require 'hashugar/version'
+require File.expand_path '../hashugar/version', __FILE__
 
 class Hashugar
 	def initialize(hash)
@@ -28,9 +28,9 @@ class Hashugar
 		@table.has_key?(stringify_key(key))
 	end
 
-	################################################################################
+	#
 	#  Hash-like methods
-	################################################################################
+	#
 
 	def [](key)
 		@table[stringify_key(key)]
@@ -52,9 +52,9 @@ class Hashugar
 		end
 	end
 
-	################################################################################
+	#
 	#  Enumerable methods
-	################################################################################
+	#
 
 	def each(&block)
 		@table_with_original_keys.each(&block)
@@ -64,9 +64,9 @@ class Hashugar
 		@table_with_original_keys.collect(&block)
 	end
 
-	################################################################################
+	#
 	#  Formatting
-	################################################################################
+	#
 
 	def to_s
 		self.to_h.to_s
