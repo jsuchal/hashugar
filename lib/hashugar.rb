@@ -1,7 +1,39 @@
 require File.expand_path '../hashugar/version', __FILE__
 
+# This class operates by essentially pretending to be a Hash with data
+# accessible via dot-notation syntax. This works by thinly wrapping a real
+# Hash with metaprogramming magic, resulting in the following features:
+#
+# - Hashugar objects containing 'duplicate' keys, that is, two unique
+#   keys of the same name but different type (String and Symbol), return
+#   the key which is a Symbol upon being called with dot-notation syntax.
+#   They still provide access to the String key, you must simply use the
+#   standard bracket syntax to access that value.
+#
+# - The 'learn_methods' method allows Hashugar to 'learn' to behave as foreign
+#   classes do when treated as a Hash, such as when they implement methods
+#   that Hash does, or inherit from Hash. An example is Rails, which uses
+#   the class HashWithIndifferentAccess to provide what the class name
+#   suggests, by inheriting from Hash and adding functionality. If such
+#   objects are converted to Hashugar, they lose the ability to access
+#   methods formerly defined by the object which aren't implemented in
+#   Hashugar, such as Hash#stringify_keys in Rails. To 'learn' methods
+#   used in other classes, Hashugar implements delegation by using the
+#   method_missing technique. At invocation, Hashugar identifies which
+#   class a 'learned' method belongs to, and attempts to convert itself to
+#   an instance of that class, and calls the method on it, passing all
+#   arguments and optional block transparently from method_missing.
+#
+#   Note that this approach does not support the delegation of multiple
+#   methods of the same name; the last class 'learned' from will be used.
+#
+#   WARNING! This has only been tested with Hash.
+#   todo: test this functionality more
+#
 class Hashugar
-	def initialize(hash)
+	@@learned_methods = {}
+
+	def initialize(hash={})
 		@table = {}
 		@table_with_original_keys = {}
 		hash.each_pair do |key, value|
@@ -15,12 +47,22 @@ class Hashugar
 		self
 	end
 
+	# This code is a bit magical (thanks to Jan Suchal, the original author!).
+	# I added the capability to 'learn' behavior of other classes, by recognizing
+	# their methods and delegating calls to them, when Hashugar doesn't implement
+	#
+	# todo: add functionality for other classes (only Hash is supported for now)
+	#
 	def method_missing(method, *args, &block)
-		method = method.to_s
-		if method.chomp!('=')
-			self[method] = args.first
+		if @@learned_methods.has_key?(method.to_sym)
+			self.to_h.send(method, *args)
 		else
-			@table[method]
+			method = method.to_s
+			if method.chomp!('=')
+				self[method] = args.first
+			else
+				@table[method]
+			end
 		end
 	end
 
@@ -28,9 +70,22 @@ class Hashugar
 		@table.has_key?(stringify_key(key))
 	end
 
+	# Assigns all public instance methods implemented by the given class
+	# or list of classes to a Hash, for use in Hashugar#method_missing.
+	# Each method points to the class that calls to it will be delegated to.
 	#
-	#  Hash-like methods
+	# @param klasses [Class, Array<Class>] Class or list of Classes
 	#
+	# todo: test this more, especially with :=
+	def self.learn_methods(klasses)
+		[klasses].flatten.each do |klass|
+			if klass.is_a? Class
+				klass.public_instance_methods(false).each { |m| @@learned_methods[m] = klass }
+			else
+				raise TypeError, 'Must a Class object.'
+			end
+		end
+	end
 
 	def [](key)
 		@table[stringify_key(key)]

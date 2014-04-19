@@ -1,10 +1,12 @@
-#!/usr/bin/env rake
+require 'bundler'
+Bundler.require
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
+# todo: cleanup this code fix dependencies
+
 RSpec::Core::RakeTask.new('spec')
 
-# If you want to make this the default task
 task :default => :spec
 
 desc 'Benchmark'

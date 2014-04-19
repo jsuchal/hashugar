@@ -1,15 +1,15 @@
-Hashugar (Hash Sugar)
-=====================
+# Hashugar (Hash Sugar)
 
 Nested OpenStruct alternative optimized for speed especially for many short-lived objects (e.g. results from db).
-TODO: deploy this gem under a CI system
 
-Usage
------
+**TODO: deploy this gem under a CI system**
+
+## Usage
 
 `$ gem install hashugar`
 
------
+Basic examples:
+
 ```ruby
 hashugar = {:a => 1, 'b' => {:c => 2, :d => [3, 4, {:e => 5}]}}.to_hashugar
 hashugar.a # => 1
@@ -17,15 +17,21 @@ hashugar.b.c # => 2
 hashugar.b.d.last.e # => 5
 ```
 
-### New in 0.0.7
-Convert a `Hashugar` object back to a regular Ruby `Hash` recursively - tested with a `Hashugar` converted from a `Hash` containing `Hash`, `Array`, `Int`, `Fixnum` and `String` objects.
-TODO: create real tests for this feature
+Convert a `Hashugar` object back to a regular Ruby `Hash` recursively:
 
 `hashugar.to_new_hash # => {:a => 1, 'b' => {:c => 2, :d => [3, 4, {:e => 5}]}}`
 
-How fast is it?
-TODO: benchmark 2.0 and 2.1
----------------
+Teach Hashugar methods from other compatible classes (currently only `Hash` supported):
+
+```ruby
+hashugar = { one: 1, two: 2 }.to_hashugar
+hashugar.clear # => nil
+Hashugar.learn_methods Hash
+hashugar.clear # => {}
+```
+
+## How fast is it?
+### TODO: benchmark 2.0 and 2.1
 
 Let's compare to the competitors - [OpenStruct](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ostruct/rdoc/OpenStruct.html), [Hashr](https://github.com/svenfuchs/hashr)
 

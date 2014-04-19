@@ -1,4 +1,5 @@
 require 'spec_helper'
+# todo: add tests for additions since v0.0.7
 
 describe Hashugar do
   context 'when accessing simple hash' do
