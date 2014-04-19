@@ -1,5 +1,8 @@
 ### Hashugar changelog
 
+## 0.0.10 / 2014-04-19
+- Added capability for the `Hashugar` class to enable translation of hyphens in Hash keys to underscores, dynamically.
+
 ## 0.0.9 / 2014-04-19
 - Modified Hashugar.new so as not to require an argument; the new form passes an empty `Hash` as default
 - Added the capability to delegate methods calls from specified classes so that Hashugar recognizes them

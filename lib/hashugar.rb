@@ -33,7 +33,50 @@ require File.expand_path '../hashugar/version', __FILE__
 class Hashugar
 	@@learned_methods = {}
 
-	def initialize(hash={})
+	# The option wrapper instantiates Hashugar 'global' options that affect either
+	# the Hashugar class itself, or all instances therof; allowing unique logic and
+	# special behavior to be implemented while concurrently providing the values
+	# as a simple Hash accessible via the Hashugar::OPTIONS.
+	#
+	# @param [List<Symbol>] List of options (preferably an Array)
+	#
+	OPTION_WRAPPER = Struct.new :dehyphenate_keys do
+		#
+		# This option functions as a boolean switch that enables or disables the
+		# automatic conversion of all hyphens in Hashugar object keys into underscores.
+		# Since hyphens are extremely popular as a means of data delineation, there
+		# often arise inconvenient situations in which data must be massaged at some
+		# point, or worse, expensive dependency injection or analogous measure
+		# taken, in order to ensure compatibility. This implementation is designed to
+		# create the least amount of side effects and/or weight, by directly altering
+		# the function of the class dynamically.
+		#
+		# todo: write tests
+		# todo: consider extracting the operation to a decoupled method or module
+		# todo: add capability to perform reverse translation (underscores to hyphens)
+		#
+		def dehyphenate_keys=(bool)
+			if bool == true
+				Hashugar.class_eval(%q[
+					def stringify_key(key)
+						(key.is_a?(Symbol) ? key.to_s : key).gsub(/-/, '_')
+					end
+				])
+			elsif bool == false
+				Hashugar.class_eval(%q[
+					def stringify_key(key)
+						key.is_a?(Symbol) ? key.to_s : key
+					end
+				])
+      else
+				raise ArgumentError
+			end
+		end
+	end
+	# Values passed to this constructor will set option defaults
+	OPTIONS = OPTION_WRAPPER.new false
+
+	def initialize(hash={}, options={})
 		@table = {}
 		@table_with_original_keys = {}
 		hash.each_pair do |key, value|
@@ -127,7 +170,7 @@ class Hashugar
 		self.to_h.to_s
 	end
 
-	private
+	# private
 
 	def stringify_key(key)
 		key.is_a?(Symbol) ? key.to_s : key
