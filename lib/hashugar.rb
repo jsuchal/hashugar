@@ -1,5 +1,5 @@
 require File.expand_path '../hashugar/version', __FILE__
-
+require 'pry'
 # This class operates by essentially pretending to be a Hash with data
 # accessible via dot-notation syntax. This works by thinly wrapping a real
 # Hash with metaprogramming magic, resulting in the following features:
@@ -41,7 +41,12 @@ class Hashugar
 	# @param [List<Symbol>] List of options (preferably an Array)
 	#
 	OPTION_WRAPPER = Struct.new :dehyphenate_keys do
-		#
+
+		# Overriding Struct#inspect allows Hashugar::OPTIONS to return a Hash
+		def inspect
+			self.to_h
+		end
+
 		# This option functions as a boolean switch that enables or disables the
 		# automatic conversion of all hyphens in Hashugar object keys into underscores.
 		# Since hyphens are extremely popular as a means of data delineation, there
@@ -56,6 +61,7 @@ class Hashugar
 		# todo: add capability to perform reverse translation (underscores to hyphens)
 		#
 		def dehyphenate_keys=(bool)
+			self[:dehyphenate_keys] = bool
 			if bool == true
 				Hashugar.class_eval(%q[
 					def stringify_key(key)
@@ -73,6 +79,7 @@ class Hashugar
 			end
 		end
 	end
+
 	# Values passed to this constructor will set option defaults
 	OPTIONS = OPTION_WRAPPER.new false
 
@@ -213,3 +220,4 @@ class Object
 		self
 	end
 end
+binding.pry
