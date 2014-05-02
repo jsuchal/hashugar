@@ -127,7 +127,7 @@ class Hashugar
 	# @param klasses [Class, Array<Class>] Class or list of Classes
 	#
 	# todo: test this more, especially with :=
-	def self.learn_methods(klasses)
+	def self.learn_methods_of(klasses)
 		[klasses].flatten.each do |klass|
 			if klass.is_a? Class
 				klass.public_instance_methods(false).each { |m| @@learned_methods[m] = klass }
