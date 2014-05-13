@@ -1,5 +1,5 @@
 require File.expand_path '../hashugar/version', __FILE__
-require 'pry'
+
 # This class operates by essentially pretending to be a Hash with data
 # accessible via dot-notation syntax. This works by thinly wrapping a real
 # Hash with metaprogramming magic, resulting in the following features:
@@ -220,4 +220,3 @@ class Object
 		self
 	end
 end
-binding.pry
