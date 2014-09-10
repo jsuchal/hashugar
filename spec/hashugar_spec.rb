@@ -1,7 +1,11 @@
 require 'spec_helper'
+require 'rspec'
 # todo: add tests for additions since v0.0.7
+# todo: update specs to use expectations
 
 describe Hashugar do
+  # let(@hashugar) { Hashugar.new a: 1, b: 2 }
+
   context 'when accessing simple hash' do
     it 'should be make accessible string and symbol keys' do
       hashugar = {:a => 1, 'b' => 2}.to_hashugar
@@ -62,9 +66,9 @@ describe Hashugar do
   context 'when using respond_to?' do
     it 'should return true on valid key' do
       hashugar = {:a => 1}.to_hashugar
-      hashugar.respond_to?('a').should be_true
-      hashugar.respond_to?(:a).should be_true
-      hashugar.respond_to?(:b).should be_false
+      expect(hashugar.respond_to?('a')).to eq(true)
+      expect(hashugar.respond_to?(:a)).to eq(true)
+      expect(hashugar.respond_to?(:b)).to eq(false)
     end
   end
 
@@ -74,6 +78,12 @@ describe Hashugar do
       hashugar.a.b.should == 1
     end
   end
+
+  # context 'when creating using Hashugar::[]' do
+  #   it 'should accept accept any argument that Hash::[] would in constructor' do
+  #     # todo: implement
+  #   end
+  # end
 
   context 'when enumerating' do
     it 'should act like normal hash' do
@@ -88,6 +98,23 @@ describe Hashugar do
 
       keys.should == [:a, :c]
       values.should == [4, 2]
+    end
+  end
+
+  # todo: expand on this
+  describe '#update' do
+    hashugar = Hashugar.new a: 1, b: 2
+    newhash = {a: 3, 'b' => 4, c: 5}
+    [Hash, Hashugar].each do |klass|
+      context "when called with a #{klass.to_s} as an argument" do
+        updated = hashugar.update klass[newhash]
+        it('should return an instance of Hashugar with correctly updated keys') do
+          expect(updated.class).to eq(Hashugar)
+          expect(updated.a).to eq(3)
+          expect(updated.b).to eq(4)
+          expect(updated.c).to eq(5)
+        end
+      end
     end
   end
 end

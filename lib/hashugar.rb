@@ -1,4 +1,4 @@
-require File.expand_path '../hashugar/version', __FILE__
+require_relative 'hashugar/version'
 
 # This class operates by essentially pretending to be a Hash with data
 # accessible via dot-notation syntax. This works by thinly wrapping a real
@@ -93,7 +93,13 @@ class Hashugar
 		end
 	end
 
-	def to_hashugar
+  class << self
+    def [](*hash)
+      Hashugar.new Hash[*hash]
+    end
+  end
+
+  def to_hashugar
 		self
 	end
 
@@ -136,6 +142,14 @@ class Hashugar
 			end
 		end
 	end
+
+  #
+  # Access and modification
+  #
+
+  def update(other)
+    self.to_h.update(other.to_h).to_hashugar
+  end
 
 	def [](key)
 		@table[stringify_key(key)]

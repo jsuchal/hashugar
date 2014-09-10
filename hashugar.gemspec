@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/hashugar/version', __FILE__)
+require_relative 'lib/hashugar/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ['Jan Suchal', 'Stephen Benner']
