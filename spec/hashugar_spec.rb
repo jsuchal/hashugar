@@ -4,7 +4,7 @@ require 'rspec'
 # todo: update specs to use expectations
 
 describe Hashugar do
-  # let(@hashugar) { Hashugar.new a: 1, b: 2 }
+  # too: spec for #shift
 
   context 'when accessing simple hash' do
     it 'should be make accessible string and symbol keys' do

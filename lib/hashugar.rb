@@ -151,6 +151,16 @@ class Hashugar
     self.to_h.update(other.to_h).to_hashugar
   end
 
+  # Removes a key-value pair and returns it as the two-item array
+  #
+  # @return [Array] First available key-value pair in the Hashugar object's internal hash
+  #
+  def shift
+    kvpair = self.to_h.shift
+    @table.delete kvpair.first
+    kvpair
+  end
+
 	def [](key)
 		@table[stringify_key(key)]
 	end

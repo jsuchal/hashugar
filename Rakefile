@@ -14,8 +14,8 @@ task :default => :spec
 task :check_version do
   require_relative 'lib/hashugar/version'
   $libversion = Hashugar::VERSION
-  gemfile = Pathname.glob('*.gem').first
-  $gemversion = gemfile.to_s.match(/-(\d+\.\d+\.\d+)\.gem/)[1]
+  $gemfile = Pathname.glob('*.gem').first
+  $gemversion = $gemfile.to_s.match(/-(\d+\.\d+\.\d+)\.gem/)[1]
   # VCS can be used to detect if key files have been changed
   $dirty = true unless `git diff --name-only lib/hashugar/version.rb`.empty?
 end
@@ -38,14 +38,14 @@ task build: :check_version do
   if $gemversion > $libversion
     abort 'ERROR! The library version appears to be behind that of currently built gem.'
   else
-    File.rm gemfile
+    File.rm $gemfile
     `gem build hashugar.gemspec`
   end
 end
 
 desc "Build gem and push to local gem server via 'geminabox'"
 task push: :check_version do
-  Rake::Task.invoke :build if $libversion > $gemversion
+  Rake::Task[:build].invoke if $libversion > $gemversion
   # Note: gem server must not already possess a gem of the same name, or else this will fail
   `gem inabox hashugar-#{$libversion}.gem` # todo: find out why this won't work
 end
