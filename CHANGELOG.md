@@ -1,5 +1,8 @@
 ### Hashugar changelog
 
+## 0.0.13 / 2014-09-10
+- Added `Hashugar#shift`
+
 ## 0.0.12 / 2014-09-09
 - Added `Hashugar#update` and specs
 - Added `Hashugar::[]`
