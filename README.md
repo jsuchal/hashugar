@@ -60,3 +60,8 @@ Hashr      create small hash and access hundred times
 Hashugar   create small hash and access hundred times
                         24413.4 (±2.0%) i/s -     124185 in   5.088771s
 ```
+
+Why is it so fast?
+------------------
+
+[OpenStruct defines a method using metaprogramming](https://github.com/ruby/ruby/blob/trunk/lib/ostruct.rb#L166-L173) on first access, but this is a slow operation. [Hashr is converting whole hash on initialization](https://github.com/svenfuchs/hashr/blob/master/lib/hashr.rb#L102-L114) which is slower when you don't need to access all keys and nested keys. Hashugar uses `method_missing`, which is slower in the long run, but faster for short-lived objects, it's also lazy so there is no precomputation/conversion step.
