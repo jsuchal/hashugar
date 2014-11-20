@@ -7,33 +7,29 @@ class Hashugar
     hash.each_pair do |key, value|
       hashugar = value.to_hashugar
       @table_with_original_keys[key] = hashugar
-      @table[convert_key(key)] = hashugar
+      @table[stringify(key)] = hashugar
     end
   end
 
   def method_missing(method, *args, &block)
     method = method.to_s
     if method.chomp!('=')
-      self[method] = args.first
+      @table[method] = args.first
     else
       @table[method]
     end
   end
 
   def [](key)
-    @table[convert_key(key)]
+    @table[stringify(key)]
   end
 
   def []=(key, value)
-    @table[convert_key(key)] = value
-  end
-
-  def to_hashugar
-    self
+    @table[stringify(key)] = value
   end
 
   def respond_to?(key)
-    @table.has_key?(convert_key(key))
+    @table.has_key?(stringify(key))
   end
 
   def each(&block)
@@ -41,7 +37,7 @@ class Hashugar
   end
 
   private
-  def convert_key(key)
+  def stringify(key)
     key.is_a?(Symbol) ? key.to_s : key
   end
 end
@@ -54,8 +50,7 @@ end
 
 class Array
   def to_hashugar
-    # TODO lazy?
-    Array.new(collect(&:to_hashugar))
+    map(&:to_hashugar)
   end
 end
 
