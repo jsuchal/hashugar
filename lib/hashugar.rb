@@ -14,7 +14,7 @@ class Hashugar
   def method_missing(method, *args, &block)
     method = method.to_s
     if method.chomp!('=')
-      self[method] = args.first
+      @table[method] = args.first
     else
       @table[method]
     end
