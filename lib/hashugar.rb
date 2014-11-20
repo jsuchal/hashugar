@@ -28,10 +28,6 @@ class Hashugar
     @table[convert_key(key)] = value
   end
 
-  def to_hashugar
-    self
-  end
-
   def respond_to?(key)
     @table.has_key?(convert_key(key))
   end
