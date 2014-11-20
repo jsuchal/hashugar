@@ -50,8 +50,7 @@ end
 
 class Array
   def to_hashugar
-    # TODO lazy?
-    Array.new(collect(&:to_hashugar))
+    map(&:to_hashugar)
   end
 end
 
