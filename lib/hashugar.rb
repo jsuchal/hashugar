@@ -36,6 +36,10 @@ class Hashugar
     @table_with_original_keys.each(&block)
   end
 
+  def to_json
+    self.instance_variable_get(:@table).to_json
+  end
+
   private
   def stringify(key)
     key.is_a?(Symbol) ? key.to_s : key
