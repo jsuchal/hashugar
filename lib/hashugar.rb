@@ -193,6 +193,11 @@ class Hashugar
 		@table_with_original_keys.collect(&block)
 	end
 
+	# Technically a Hash method, but a good one
+	def values_at(*keys)
+		@table_with_original_keys.values_at *keys
+	end
+
 	#
 	#  Formatting
 	#
