@@ -89,4 +89,18 @@ describe Hashugar do
       expect(values).to eq([4, 2])
     end
   end
+
+  describe '#to_hash' do
+    it 'returns the original hash' do
+      hashugar = Hashugar.new({:a => 4, :c => 2})
+      expect(hashugar.to_hash).to eq({:a => 4, :c => 2})
+    end
+
+    context 'when containing nested hashugar' do
+      it 'returns the original hash' do
+        hashugar = Hashugar.new({ nested: { a: 4, c: 2 } })
+        expect(hashugar.to_hash[:nested]).to eq({:a => 4, :c => 2})
+      end
+    end
+  end
 end

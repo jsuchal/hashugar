@@ -36,6 +36,13 @@ class Hashugar
     @table_with_original_keys.each(&block)
   end
 
+  def to_hash
+    hash = @table_with_original_keys.to_hash
+    hash.each do |key, value|
+      hash[key] = value.to_hash if value.is_a?(Hashugar)
+    end
+  end
+
   private
   def stringify(key)
     key.is_a?(Symbol) ? key.to_s : key
