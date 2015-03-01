@@ -29,11 +29,22 @@ class Hashugar
   end
 
   def respond_to?(key)
-    @table.has_key?(stringify(key))
+    super(key) || @table.has_key?(stringify(key))
   end
 
   def each(&block)
     @table_with_original_keys.each(&block)
+  end
+
+  def to_hash
+    hash = @table_with_original_keys.to_hash
+    hash.each do |key, value|
+      hash[key] = value.to_hash if value.is_a?(Hashugar)
+    end
+  end
+
+  def empty?
+    @table.empty?
   end
 
   private
