@@ -43,6 +43,10 @@ class Hashugar
     end
   end
 
+  def empty?
+    @table.empty?
+  end
+
   private
   def stringify(key)
     key.is_a?(Symbol) ? key.to_s : key

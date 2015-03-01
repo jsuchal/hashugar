@@ -92,7 +92,7 @@ describe Hashugar do
 
   describe '#to_hash' do
     it 'responds to to_hash' do
-      expect(Hashugar.new({}).respond_to?(:to_hash)).to eq(true)
+      expect(Hashugar.new({}).respond_to?(:to_hash)).to be true
     end
     it 'returns the original hash' do
       hashugar = Hashugar.new({:a => 4, :c => 2})
@@ -104,6 +104,15 @@ describe Hashugar do
         hashugar = Hashugar.new({ nested: { a: 4, c: 2 } })
         expect(hashugar.to_hash[:nested]).to eq({:a => 4, :c => 2})
       end
+    end
+  end
+
+  describe '#empty?' do
+    it 'behaves like the original hash' do
+      empty_hashugar = Hashugar.new({})
+      hashugar = Hashugar.new({a: 1})
+      expect(empty_hashugar.empty?).to be true
+      expect(hashugar.empty?).to be false
     end
   end
 end
