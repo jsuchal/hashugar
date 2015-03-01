@@ -29,7 +29,7 @@ class Hashugar
   end
 
   def respond_to?(key)
-    @table.has_key?(stringify(key))
+    super(key) || @table.has_key?(stringify(key))
   end
 
   def each(&block)

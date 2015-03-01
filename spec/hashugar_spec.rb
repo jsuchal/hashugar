@@ -91,6 +91,9 @@ describe Hashugar do
   end
 
   describe '#to_hash' do
+    it 'responds to to_hash' do
+      expect(Hashugar.new({}).respond_to?(:to_hash)).to eq(true)
+    end
     it 'returns the original hash' do
       hashugar = Hashugar.new({:a => 4, :c => 2})
       expect(hashugar.to_hash).to eq({:a => 4, :c => 2})
