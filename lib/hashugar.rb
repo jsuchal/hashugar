@@ -4,7 +4,7 @@ require_relative 'hashugar/version'
 # accessible via dot-notation syntax. This works by thinly wrapping a real
 # Hash with metaprogramming magic, resulting in the following features:
 #
-# - Hashugar objects containing 'duplicate' keys, that is, two unique
+# - Hashugar objects containing 'duplicate' keys (that is: two unique
 #   keys of the same name but different type (String and Symbol), return
 #   the key which is a Symbol upon being called with dot-notation syntax.
 #   They still provide access to the String key, you must simply use the
@@ -64,14 +64,15 @@ class Hashugar
       self[:dehyphenate_keys] = bool
       if bool == true
         Hashugar.class_eval(%q[
-          def stringify_key(key)
-            (key.is_a?(Symbol) ? key.to_s : key).gsub(/-/, '_')
+          def [](key, value)
+						new_key = key.is_a?(Symbol) ? key.to_s.gsub(/-/, '_').to_sym : key.gsub(/-/, '_')
+            @table[new_key] = value
           end
         ])
       elsif bool == false
         Hashugar.class_eval(%q[
-          def stringify_key(key)
-            key.is_a?(Symbol) ? key.to_s : key
+          def []=(key, value)
+            @table[key] = value
           end
         ])
       else
@@ -85,11 +86,8 @@ class Hashugar
 
   def initialize(hash={}, options={})
     @table = {}
-    @table_with_original_keys = {}
     hash.each_pair do |key, value|
-      hashugar = value.to_hashugar
-      @table_with_original_keys[key] = hashugar
-      @table[stringify_key(key)] = hashugar
+      @table[key] = value.to_hashugar
     end
   end
 
@@ -115,15 +113,16 @@ class Hashugar
     else
       method = method.to_s
       if method.chomp!('=')
-        self[method] = args.first
+	      real_method = self.has_key?(method.to_sym) ? method.to_sym : method
+        self[real_method] = args.first
       else
-        @table[method]
+        self[method.to_sym] || self[method]
       end
     end
   end
 
   def respond_to?(key)
-    @table.has_key?(stringify_key(key))
+    @table.has_key?(key.to_sym) || @table.has_key?(key.to_s)
   end
 
   # Assigns all public instance methods implemented by the given class
@@ -162,11 +161,11 @@ class Hashugar
   end
 
   def [](key)
-    @table[stringify_key(key)]
+    @table[key]
   end
 
   def []=(key, value)
-    @table[stringify_key(key)] = value
+    @table[key] = value
   end
 
   # This method (obviously) converts a Hashugar struct back to a Hash.
@@ -186,16 +185,16 @@ class Hashugar
   #
 
   def each(&block)
-    @table_with_original_keys.each(&block)
+    @table.each(&block)
   end
 
   def collect(&block)
-    @table_with_original_keys.collect(&block)
+    @table.collect(&block)
   end
 
   # Technically a Hash method, but a good one
   def values_at(*keys)
-    @table_with_original_keys.values_at *keys
+    @table.values_at *keys
   end
 
   #
@@ -204,12 +203,6 @@ class Hashugar
 
   def to_s
     self.to_h.to_s
-  end
-
-  # private
-
-  def stringify_key(key)
-    key.is_a?(Symbol) ? key.to_s : key
   end
 end
 
