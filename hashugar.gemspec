@@ -2,10 +2,10 @@
 require_relative 'lib/hashugar/version'
 
 Gem::Specification.new do |gem|
-  gem.authors       = ['Stephen Benner', 'Jan Suchal']
-  gem.email         = 'stephen.benner@sensiblesolutions.me'
-  gem.summary       = 'Utilitarian data structure'
-  gem.description   = 'Utilitarian data structure designed to make data manipulation easy.'
+  gem.authors       = ['Jan Suchal', 'Stephen Benner']
+  gem.email         = 'sbenner9@gmail.com'
+  gem.summary       = 'Fast nested OpenStruct'
+  gem.description   = 'Nested OpenStruct optimized for short-lived objects.'
   gem.homepage      = 'https://github.com/SteveBenner/hashugar'
   gem.license       = 'MIT'
 

@@ -1,8 +1,4 @@
-### Hashugar library changelog
-
-## 0.0.14 / 2015-05-27
-- Completely re-wrote base code to reflect behavior as stated in README and documentation
-- Significantly reduced code overall
+### Hashugar changelog
 
 ## 0.0.13 / 2014-09-10
 - Added `Hashugar#shift`
