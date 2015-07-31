@@ -77,7 +77,7 @@ class Hashugar
       else
         raise ArgumentError
       end
-    endg
+    end
   end
 
   # Values passed to this constructor will set option defaults
