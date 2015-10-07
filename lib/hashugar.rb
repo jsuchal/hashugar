@@ -28,7 +28,7 @@ class Hashugar
     @table[stringify(key)] = value
   end
 
-  def respond_to?(key)
+  def respond_to?(key, include_all=false)
     super(key) || @table.has_key?(stringify(key))
   end
 
