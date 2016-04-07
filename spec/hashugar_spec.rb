@@ -20,6 +20,7 @@ describe Hashugar do
       hashugar.b = 3
       expect(hashugar.a).to eq(2)
       expect(hashugar.b).to eq(3)
+      expect(hashugar.to_hash).to eq({:a => 2, :b => 3})
     end
 
     it 'should be readable through old methods' do
