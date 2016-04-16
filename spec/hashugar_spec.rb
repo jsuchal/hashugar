@@ -94,13 +94,20 @@ describe Hashugar do
     it 'responds to to_hash' do
       expect(Hashugar.new({}).respond_to?(:to_hash)).to be true
     end
-    it 'returns the original hash' do
-      hashugar = Hashugar.new({:a => 4, :c => 2})
+
+    it 'returns normal hash with all keys as symbol' do
+      hashugar = Hashugar.new({:a => 4, 'c' => 2})
       expect(hashugar.to_hash).to eq({:a => 4, :c => 2})
     end
 
+    it 'returns normal hash with changes' do
+      hashugar = Hashugar.new({:a => 4, :c => 2 })
+      hashugar.b = 5
+      expect(hashugar.to_hash).to eq({:a => 4, :b => 5, :c => 2})
+    end
+
     context 'when containing nested hashugar' do
-      it 'returns the original hash' do
+      it 'returns normal hash for nested hashugar' do
         hashugar = Hashugar.new({ nested: { a: 4, c: 2 } })
         expect(hashugar.to_hash[:nested]).to eq({:a => 4, :c => 2})
       end
