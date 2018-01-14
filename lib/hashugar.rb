@@ -47,7 +47,12 @@ class Hashugar
     @table.empty?
   end
 
+  def inspect
+    "#<#{self.class} #{to_hash.inspect}>"
+  end
+
   private
+
   def stringify(key)
     key.is_a?(Symbol) ? key.to_s : key
   end
