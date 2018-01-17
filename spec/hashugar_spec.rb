@@ -115,4 +115,11 @@ describe Hashugar do
       expect(hashugar.empty?).to be false
     end
   end
+
+  describe '#inspect' do
+    it 'prints the original hash' do
+      hashugar = Hashugar.new({a: { b: 1}})
+      expect(hashugar.inspect).to eq('#<Hashugar {:a=>{:b=>1}}>')
+    end
+  end
 end
