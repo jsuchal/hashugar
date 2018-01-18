@@ -122,4 +122,13 @@ describe Hashugar do
       expect(hashugar.inspect).to eq('#<Hashugar {:a=>{:b=>1}}>')
     end
   end
+
+  describe 'Enumerable' do
+    it 'mixes in  Enumerable methods' do
+      hashugar = Hashugar.new({a: 1, b: 2})
+      expect(hashugar.any?{|k,v| k == :a}).to eq(true)
+      expect(hashugar.all?{|k,v| k == :a}).to eq(false)
+      expect(hashugar.map{|k,v| [k, v*2]}).to eq([[:a, 2],[:b, 4]])
+    end
+  end
 end
