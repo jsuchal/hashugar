@@ -35,6 +35,13 @@ describe Hashugar do
       hashugar[:a] = 3
       expect(hashugar.a).to eq(3)
     end
+
+    it 'should be writable with original keys' do
+      hashugar = {:a => 1, 'b' => 2}.to_hashugar
+      hashugar.a = 100
+      hashugar.b = 200
+      expect(hashugar.to_hash).to eq({:a => 100, 'b' => 200})
+    end
   end
 
   context 'when accessing nested hash' do
@@ -107,12 +114,21 @@ describe Hashugar do
     end
   end
 
-  describe '#empty?' do
+  describe 'Delegate' do
     it 'behaves like the original hash' do
       empty_hashugar = Hashugar.new({})
       hashugar = Hashugar.new({a: 1})
       expect(empty_hashugar.empty?).to be true
       expect(hashugar.empty?).to be false
+    end
+
+    it 'has methods of the original hash' do
+      hashugar = Hashugar.new({a: 1, b: 2})
+      expect(hashugar.size).to eq(2)
+      expect(hashugar.any?{|k,v| k == :a}).to eq(true)
+      expect(hashugar.all?{|k,v| k == :a}).to eq(false)
+      expect(hashugar.map{|k,v| [k, v*2]}).to eq([[:a, 2],[:b, 4]])
+      expect(hashugar.values).to eq([1, 2])
     end
   end
 
