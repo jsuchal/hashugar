@@ -25,7 +25,7 @@ class Hashugar
     if @table.has_key?(key.to_s)
       @table[key.to_s] = value
     else
-      @table[key] = value
+      @table[key.to_sym] = value
     end
   end
 

@@ -35,6 +35,13 @@ describe Hashugar do
       hashugar[:a] = 3
       expect(hashugar.a).to eq(3)
     end
+
+    it 'should be writable with original keys' do
+      hashugar = {:a => 1, 'b' => 2}.to_hashugar
+      hashugar.a = 100
+      hashugar.b = 200
+      expect(hashugar.to_hash).to eq({:a => 100, 'b' => 200})
+    end
   end
 
   context 'when accessing nested hash' do
