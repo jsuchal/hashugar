@@ -1,6 +1,8 @@
 require "hashugar/version"
 
 class Hashugar
+  include Enumerable
+
   def initialize(hash)
     @table = {}
     @table_with_original_keys = {}
