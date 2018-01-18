@@ -37,10 +37,11 @@ class Hashugar
   end
 
   def to_hash
-    hash = @table_with_original_keys.to_hash
-    hash.each do |key, value|
-      hash[key] = value.to_hash if value.is_a?(Hashugar)
+    hash = {}
+    @table.each_pair do |key, value|
+      hash[symbolize(key)] = value.is_a?(Hashugar) ? value.to_hash : value
     end
+    hash
   end
 
   def empty?
@@ -55,6 +56,10 @@ class Hashugar
 
   def stringify(key)
     key.is_a?(Symbol) ? key.to_s : key
+  end
+
+  def symbolize(key)
+    key.to_s.to_sym
   end
 end
 
