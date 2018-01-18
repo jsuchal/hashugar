@@ -13,7 +13,11 @@ class Hashugar
     if method.chomp!('=')
       self[method] = args.first
     else
-      self[method]
+      if @table.respond_to?(method)
+        @table.send(method, *args, &block)
+      else
+        self[method]
+      end
     end
   end
 
@@ -42,10 +46,6 @@ class Hashugar
     hash.each do |key, value|
       hash[key] = value.to_hash if value.is_a?(Hashugar)
     end
-  end
-
-  def empty?
-    @table.empty?
   end
 
   def inspect
