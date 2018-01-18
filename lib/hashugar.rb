@@ -34,11 +34,7 @@ class Hashugar
   end
 
   def respond_to?(key, include_all=false)
-    super || @table.has_key?(key.to_s) || @table.has_key?(key.to_sym)
-  end
-
-  def each(&block)
-    @table.each(&block)
+    super || @table.respond_to?(key) || @table.has_key?(key.to_s) || @table.has_key?(key.to_sym)
   end
 
   def to_hash
