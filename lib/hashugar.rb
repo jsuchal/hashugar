@@ -3,41 +3,42 @@ require "hashugar/version"
 class Hashugar
   def initialize(hash)
     @table = {}
-    @table_with_original_keys = {}
     hash.each_pair do |key, value|
-      hashugar = value.to_hashugar
-      @table_with_original_keys[key] = hashugar
-      @table[stringify(key)] = hashugar
+      @table[key] = value.to_hashugar
     end
   end
 
   def method_missing(method, *args, &block)
     method = method.to_s
     if method.chomp!('=')
-      @table[method] = args.first
+      self[method] = args.first
     else
-      @table[method]
+      self[method]
     end
   end
 
   def [](key)
-    @table[stringify(key)]
+    @table[key.to_s] || @table[key.to_sym]
   end
 
   def []=(key, value)
-    @table[stringify(key)] = value
+    if @table.has_key?(key.to_s)
+      @table[key.to_s] = value
+    else
+      @table[key.to_sym] = value
+    end
   end
 
   def respond_to?(key, include_all=false)
-    super(key) || @table.has_key?(stringify(key))
+    super || @table.has_key?(key.to_s) || @table.has_key?(key.to_sym)
   end
 
   def each(&block)
-    @table_with_original_keys.each(&block)
+    @table.each(&block)
   end
 
   def to_hash
-    hash = @table_with_original_keys.to_hash
+    hash = @table.to_hash
     hash.each do |key, value|
       hash[key] = value.to_hash if value.is_a?(Hashugar)
     end
@@ -49,12 +50,6 @@ class Hashugar
 
   def inspect
     "#<#{self.class} #{to_hash.inspect}>"
-  end
-
-  private
-
-  def stringify(key)
-    key.is_a?(Symbol) ? key.to_s : key
   end
 end
 
